@@ -1,0 +1,41 @@
+{% extends "index.html" %}
+{% block header %}
+	{% if not user %}
+		<div id='identificador'>
+			<p>No está regsitrado en la página. Pulse inicio para loguearse. </p>
+			<a href="/"> <span>Inicio</span></a>
+		 </div>
+	{% else %}
+		<div id='identificador'>
+			<p> Bienvenido {{ user }} </p>
+			<a href = '/logout'>Desconectar</a>
+		 </div>
+	{% endif %}
+
+{% endblock %}
+{% block contenido %}
+
+<h2>Restaurantes buscados por zona</h2>
+<p>Prueba restaurantes:</p>
+{% if z > 1%}
+<table class="table table-striped">
+ <thead>
+	 <tr>
+		 <th>Nombre</th>
+	 </tr>
+ </thead>
+
+<ul class="pagination">
+	{% for min in range(1,z) %}
+	<li onclick='devuelve({{z-1}})'><a href='#' >{{min}}</a></li>
+	{% endfor %}
+</ul>
+
+
+</table>
+
+ {% endif %}
+ 
+
+
+{% endblock %}

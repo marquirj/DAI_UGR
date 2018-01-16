@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   {% load static %}
+  <title>Universidad de Granada</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" type="text/css" href=" {% static 'css/bootstrap.css' %}" />
+ <script href="{% static 'js/ie-emulation-modes-warning.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- Bootstrap core JavaScript
+   ================================================== -->
+   <!-- Placed at the end of the document so the pages load faster -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+   <script>window.jQuery || document.write('<script href="{% static "js/vendor/jquery.min.js" %}"><\/script>')</script>
+   <script href="{%static 'js/bootstrap.min.js' %}"></script>
+   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+   <script href="{% static 'js/ie10-viewport-bug-workaround.js' %} "></script>
+
+   <script src="https://code.highcharts.com/highcharts.js"></script>
+   <script src="https://code.highcharts.com/modules/exporting.js"></script>
+</head>
+<body onload='hei()'>{% csrf_token %}
+	<header>
+
+		<div id="logo">
+			<img src="{% static 'logo.png' %}">
+		</div>
+
+		 {% block header %}
+
+
+		<div id="identificador">
+            <nav class="navbar navbar-light bg-light static-top">
+                  <div class="container">
+                      {% if user.is_authenticated %}
+                        <p>Bienvenido {{ user.username }}</p>
+                        <a class="class="btn btn-link" href="{% url 'auth_logout' %}">Salir</a>
+                    {% else %}
+                    <a class="btn btn-primary" href="{% url 'auth_login' %}">Sign In</a>
+
+                     {%endif%}
+                  </div>
+                </nav>
+		</div>
+
+		{% endblock %}
+		<div class="clear"></div>
+	</header>
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+        <a class="btn btn-link" href="/restaurantes">Inicio</a></br>
+        <a class="btn btn-link" href="/restaurantes/buscar_restaurante">Buscar Restaurantes</a></br>
+        <a class="btn btn-link" href="/restaurantes/crear_restaurante">Crear Restaurante</a></br>
+        <a class="btn btn-link" href="/restaurantes/highcarts">Highcarts</a></br>
+    </div>
+<script>
+    function infor(cord){
+
+    				 var url= 'http://127.0.0.1:8080/restaurantes/info/';
+
+    				 $.ajax({
+    						 type: "GET",
+    						 url:url,
+    						 data:{} ,
+    						 success: function(datos){
+    								 $('#tabla').html(datos);
+
+    								console.log("xx");
+    						 }
+    				 });
+    }
+</script>
+
+
+    <div class="col-sm-9">
+
+        {% block contenido %}
+        			<h2>Práctica de Desarrollo de Aplicaciones para Internet.</h2></br>
+                    <table class="table table-striped">
+            	  	<thead>{{restaurantes.id}}
+            	  		<tr>
+            	  			<th>Nombre</th>
+            	  			<th>Barrio</th>
+                            <th>Codigo Postal</th>
+                            <th>Cocina</th>
+            	  		</tr>
+            	  	</thead>
+                    {% for restaurantes in lista %}
+                        <tr>
+                            <td>{{ restaurantes.name }}</td>
+                            <td>{{ restaurantes.borough }}</td>
+                            <td>{{ restaurantes.address.zipcode }}</td>
+                            <td>{{ restaurantes.cuisine  }}</td>
+                        </tr>
+                    {% endfor %}
+
+                </table>
+          {% endblock %}
+          {% block body_block %}
+          {% endblock %}
+  </div>
+
+  </div>
+</div>
+
+<footer class="container-fluid">
+  <p class="cc">Juan Antonio Martín Quirós - Aplicación Web </p>
+  <p class="prueba2">DAI 2017/2018</p>
+  <button id ="bonton" class="btn btn-primary">Muestra animada</button>
+</footer>
+<script>
+   $(document).ready(function(){
+
+      $("#identificador input").mouseup(function(){
+       alert("Nombre usuario");
+     });
+     $("#identificador").click(function(){
+      $(this).css('background','-webkit-linear-gradient(top,white,black)');
+     });
+
+     $("#bonton").click(function(){
+       $(".prueba2").animate({borderLeftWidth:"10px", borderRightWidth:"20px"});
+   });
+
+
+     $(".emerge:first").click(function() {
+        $(".borrado").hide(1500);
+     });
+     $(".emerge:last").click(function() {
+        $(".borrado").show(1500);
+     });
+
+
+   });
+
+
+
+
+
+</script>
+</body>
+</html>

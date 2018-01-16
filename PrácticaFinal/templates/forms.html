@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+{% block header %}
+	{% if not user %}
+		<div id='identificador'>
+			<p>No está regsitrado en la página. Pulse inicio para loguearse. </p>
+			<a href="/"> <span>Inicio</span></a>
+		 </div>
+	{% else %}
+		<div id='identificador'>
+			<p> Bienvenido {{ user }} </p>
+			<a href = '/logout'>Desconectar</a>
+		 </div>
+	{% endif %}
+
+{% endblock %}
+{% block contenido %}
+<form action="{% url 'nuevo_restaurante' %}" method="post">
+   		<div class="form-group">
+   			{% csrf_token %}
+   			{{ form.as_p }}
+
+            <input type="submit" value="Enviar" />
+   		</div>
+   	</form>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "index.html" %}
+
+{% block body_block %}
+    <style>
+      #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+  </head>
+  <body>
+     
+    <h3>{{pasamos.name}}</h3>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var uluru = {lat: parseFloat({{pasamos.address.coord.1}}), lng: parseFloat({{pasamos.address.coord.0}})};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSpCTH3pweGi9POAh5Ak6WXCRDYUeVxns&callback=initMap">
+    </script>
+
+  {% endblock %}
+{% block contenido %}
+<p></p>
+  {% endblock %}

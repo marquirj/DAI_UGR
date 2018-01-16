@@ -1,0 +1,71 @@
+{% extends "index.html" %}
+
+{% block contenido %}
+<div id="container" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+ <script type="text/javascript">
+ $(document).ready(function() {
+     Highcharts.chart('container', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Restaurantes organizados por tipo de cocina'
+    },
+    subtitle: {
+        text: 'Source: Base de datos pymongo</a>'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -45,
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Cocina (mil)'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: 'Restaurantes por cocina: <b>{point.y:.1f} mil</b>'
+    },
+    series: [{
+        name: 'Cocina',
+        data: [
+
+                ['American', {{valor0}}],
+                ['Chinese', {{valor1}}],
+                ['Hamburgers', {{valor2}}],
+                ['Italian', {{valor3}}],
+                ['Irish', {{valor4}}],
+                ['Jewish/Kosher', {{valor5}}],
+                ['Delicatessen', {{valor6}}],
+                ['Bagels/Pretzels', {{valor7}}]
+
+
+        ],
+        dataLabels: {
+            enabled: true,
+            rotation: -90,
+            color: '#FFFFFF',
+            align: 'right',
+            format: '{point.y:.1f}', // one decimal
+            y: 10, // 10 pixels down from the top
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+})
+</script>
+
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends "index.html" %}
+
+{% block body_block %}
+<script>
+function hei(){
+    $('document').ready(function(){
+
+        $('#cuisine').css('visibility', 'hidden');
+         $('label[for=cuisine]').hide();
+        $('#name').css('visibility', 'hidden');
+         $('label[for=name]').hide();
+         $('#borough').css('visibility', 'hidden');
+          $('label[for=borough]').hide();
+
+        //$('input[type="submit"]').hide();
+    })
+}
+
+function cambiar(){
+    $('document').ready(function(){
+        //$('#hola').css('visibility', 'visible');
+         //$('label[for=hola]').show();
+         if ($('#kk').val()=='borough'){
+             $('label[for=borough]').show();
+             $('#cuisine').css('visibility', 'hidden');
+             $('label[for=cuisine]').hide();
+             $('#name').css('visibility', 'hidden');
+              $('#borough').css('visibility', 'visible');
+               $('label[for=name]').hide();
+              // $('input[type="submit"]').show();
+
+         }else if ($('#kk').val()=='cuisine'){
+               $('label[for=name]').hide();
+               $('#name').css('visibility', 'hidden');
+               //$('input[type="submit"]').show();
+
+                $('#cuisine').css('visibility', 'visible');
+                 $('#borough').css('visibility', 'hidden');
+                 $('label[for=cuisine]').show();
+                  $('label[for=borough]').hide();
+         }else if ($('#kk').val()=='name'){
+             $('label[for=name]').show();
+             $('#name').css('visibility', 'visible');
+             //$('input[type="submit"]').show();
+
+              $('#cuisine').css('visibility', 'hidden');
+               $('#borough').css('visibility', 'hidden');
+               $('label[for=cuisine]').hide();
+                $('label[for=borough]').hide();
+         }else if ($('#kk').val()=='Eligeuno'){
+            $('#cuisine').css('visibility', 'hidden');
+             $('label[for=cuisine]').hide();
+            $('#name').css('visibility', 'hidden');
+             $('label[for=name]').hide();
+             $('#borough').css('visibility', 'hidden');
+              $('label[for=borough]').hide();
+
+         }
+    })
+}
+function info(){
+    alert('ho');
+    per = document.getElementById("h").name;
+    $.ajax({
+        type:"GET",
+        url:'http://127.0.0.1:8080/restaurantes/info/',
+        data: {
+            idcoordenadas:per
+        },
+        success:function(datos){
+            console.log('hecho');
+        },
+        failure:function(datos){
+            console.log('no hecho');
+        }
+    });
+}
+function cargarpagina(d){
+
+        //var d = $("#juan").text();
+        console.log(d);
+         x = document.getElementById("prueba").value;
+         z = document.getElementById("prueba1").value;
+         console.log(x);
+         console.log(z);
+        $.ajax( {
+                type: "GET",
+                url:'http://127.0.0.1:8080/restaurantes/buscar_restaurantesajax/',
+                data: {
+                       busqueda: d, paso: x, pasala:z},
+                success: function(datos){
+                    console.log(datos);
+                    restaurantes= datos;
+
+                    $("#bucle").empty();
+                    for( r in restaurantes){
+                        console.log(restaurantes[r]['name']);
+                        console.log(restaurantes[r]['borough']);
+                        $("#bucle").append("<tr><td>"+ restaurantes[r]['name']+
+                        "</td>"+"<td>"+restaurantes[r]['borough']+
+                        "</td><td><a href=/restaurantes/info/"+ restaurantes[r]['id'] +" >MAPA</a></td>"+
+                        "</td><td><a href=/restaurantes/modificar_restaurantes/"+ restaurantes[r]['id'] +" >Editar</a></td>"
+                        +"</tr>");
+
+                    }
+
+                },
+                failure: function(datos){
+                    console.log("XXX");
+                }
+        });
+}
+</script>
+<form method="POST" action="{% url 'buscar_restaurante' %}" >
+   		<div class="form-group">
+   			{% csrf_token %}
+   			{{ form.as_p }}
+
+            <input type="submit" value="Enviar" />
+   		</div>
+
+   	</form>
+
+{% endblock %}
+{% block contenido %}
+{%if control == "as" %}
+    <input type="hidden" id='prueba' name="{{paso}}" value="{{paso}}">
+    <input type="hidden" id='prueba1' name="{{pasala}}" value="{{pasala}}">
+	<ul class="pagination">
+		{% for min in total %}
+		      <li ><a  href="javascript:;" onclick="cargarpagina({{min}})"> {{ min }}</a><span> </span></li>
+        {% endfor %}
+	</ul>
+
+	<div class="tabla">
+		<table class="table table-striped">
+	  	<thead>
+	  		<tr>
+	  			<th>Nombre</th>
+	  			<th>Barrio</th>
+                <th>Mapa</th>
+                <th>Editar</th>
+	  		</tr>
+	  	</thead>
+
+
+	   <tbody id="bucle">
+           {% for list in lista %}
+
+	     <tr>
+	       <td>{{list.name}}</td>
+           <td>{{list.borough}}</td>
+           <td><a href=/restaurantes/info/{{list.restaurant_id}}>Ubicación </a> </td>
+           <td><a href=/restaurantes/modificar_restaurantes/{{list.restaurant_id}}>Ubicación </a> </td>
+	     </tr>
+
+         {% endfor %}
+	   </tbody>
+
+
+	 </table>
+ </div>
+
+{%endif%}
+{% endblock %}

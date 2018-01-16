@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+{% block contenido %}
+<div class="column contenido">
+	<h2>Bienvenido a la Práctica 3: ejercicio1 de DAI.</h2></br>
+	<p>Página para ver sus sitios visitados, solo si estas identificado.</p></br>
+	 {% for pagina in paginas %}
+ 	   	<div class="section">
+ 	   	    <span>{{pagina}}</span></a>
+ 	   	</div>
+	{% endfor %}
+	<a href="/"> <span>Inicio</span></a
+</div>
+
+
+{% endblock %}

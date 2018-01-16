@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+{% block header %}
+	{% if not username %}		
+		<div id='identificador'>
+			<p>No está regsitrado en la página. Pulse inicio para loguearse. </p>
+			<a href="/"> <span>Inicio</span></a>
+		 </div>
+	{% else %}
+		<div id='identificador'>
+			<p> Bienvenido {{ username }} </p>
+			<a href = '/logout'>Desconectar</a> 
+		 </div>
+	{% endif %}
+	
+{% endblock %}
+{% block contenido %}	
+	
+
+		<div >
+		
+			<form action="/registro" method="POST">
+				
+				<input type="text" name="username" placeholder="Correo.."></input>
+				<input type="password" name="clave" placeholder="Contraseña.."></input>
+				<input type="submit" value="Enviar"/>
+				
+			</form>
+			<a href="/"> <span>Inicio</span></a>
+		</div>
+		
+{% endblock %}

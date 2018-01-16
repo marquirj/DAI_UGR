@@ -1,0 +1,121 @@
+{% extends "index.html" %}
+{% block header %}
+	{% if not user %}
+		<div id='identificador'>
+			<p>No está regsitrado en la página. Pulse inicio para loguearse. </p>
+			<a href="/"> <span>Inicio</span></a>
+		 </div>
+	{% else %}
+		<div id='identificador'>
+			<p> Bienvenido {{ user }} </p>
+			<a href = '/logout'>Desconectar</a>
+		 </div>
+	{% endif %}
+
+{% endblock %}
+
+{% block contenido %}
+<script>
+	$(document).ready(function(){
+		
+
+
+
+	});
+
+
+		 function cargar(){
+
+
+				 $.ajax({
+						 type: "POST",
+						 url:'http://127.0.0.1:8000/restaurantes/restaurantes/',
+						 data:{busqueda : busqueda} ,
+						 success: function(datos){
+								 $('#tabla').html(datos);
+
+								console.log("xx");
+						 }
+				 });
+		 }
+		 function cargarpagina(d){
+
+				 //var d = $("#juan").text();
+				 console.log(d);
+
+				 $.ajax( {
+						 type: "GET",
+						 url:'http://127.0.0.1:8000/restaurantes/restaurantesajax/',
+						 data: {
+						        busqueda: d},
+						 success: function(datos){
+							 restaurantes= $.parseJSON(datos);
+
+							 $("#bucle").empty();
+							 for( r in restaurantes){
+								 console.log(restaurantes[r]['name']);
+								 console.log(restaurantes[r]['borough']);
+								 $("#bucle").append("<tr><td>"+ restaurantes[r]['name']+"</td>"+"<td>"+restaurantes[r]['borough']+"</td></tr>");
+
+							 }
+
+						 },
+						 failure: function(datos){
+							 console.log("XXX");
+						 }
+				 });
+		 }
+
+
+	</script>
+<h2>Búsqueda por tipo de cocina: </h2>
+
+<form  method="POST">{% csrf_token %}
+  <div class="form-group">
+    <label for="text">Tipo de cocina:</label>
+		<select class="form-control" name="busqueda">
+			<option value="as">Seleccione una opción</option>
+			<option value="Chinese">Chinese</option>
+		  <option value="Italian" >Italian</option>
+		  <option value="American">American</option>
+		  <option value="Hamburgers">Hamburguers</option>
+		  <option value="Irish">Irish</option>
+		</select>
+  </div>
+	<button type="submit" class="btn btn-default">Enviar</button><p>
+</form>
+{%if control == "as" %}
+	<ul class="pagination">
+		{% for min in total %}
+		<li ><a  href="javascript:;" onclick="cargarpagina({{pasala}})"> {{ min }}</a><span> </span></li>
+		{% endfor %}
+	</ul>
+{%endif%}
+	<div class="tabla">
+		<table class="table table-striped">
+	  	<thead>
+	  		<tr>
+	  			<th>Nombre</th>
+	  			<th>Barrio</th>
+	  		</tr>
+	  	</thead>
+
+
+	   <tbody id="bucle">
+	     <tr>
+	       <td></td>
+
+	     </tr>
+			 <tr>
+	       <td></td>
+
+	     </tr>
+	   </tbody>
+
+
+	 </table>
+ </div>
+
+
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+
+{% block contenido %}
+<h2>Práctica de Desarrollo de Aplicaciones para Internet.</h2></br>
+<h3>Está creando un restaurante.</h3></br>
+{% endblock %}
+{% block body_block %}
+<form method="POST" action="{% url 'crear_restaurante' %}" >
+   		<div class="form-group">
+   			{% csrf_token %}
+   			{{ form.as_p }}
+
+            <input type="submit" value="Enviar" />
+   		</div>
+
+ </form>
+ {% endblock %}
